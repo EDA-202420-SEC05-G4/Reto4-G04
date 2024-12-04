@@ -1,35 +1,9 @@
-"""
- * Copyright 2020, Departamento de sistemas y Computación,
- * Universidad de Los Andes
- *
- * Desarrollado para el curso ISIS1225 - Estructuras de Datos y Algoritmos
- *
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Contribución de:
- *
- * Dario Correal
- *
- """
-
 import config
-from DISClib.DataStructures import adjlist as g
-from DISClib.ADT import list as lt
-from DISClib.ADT import map as map
-from DISClib.ADT import stack as stk
-from DISClib.Utils import error as error
+from DataStructures.Graph import adj_list_graph as g
+from DataStructures.List import array_list as lt
+from DataStructures.Map import map_linear_probing as map
+from DataStructures.Stack import stack as stk
+from DataStructures.Utils import error as error
 assert config
 
 
@@ -51,7 +25,7 @@ def DepthFirstSearch(graph, source):
                   'visited': None,
                   }
 
-        search['visited'] = map.newMap(numelements=g.numVertices(graph),
+        search['visited'] = map.new_map(numelements=g.num_vertices(graph),
                                        maptype='PROBING',
                                        cmpfunction=graph['cmpfunction']
                                        )
@@ -77,7 +51,7 @@ def dfsVertex(search, graph, vertex):
     """
     try:
         adjlst = g.adjacents(graph, vertex)
-        for w in lt.iterator(adjlst):
+        for w in adjlst['elements']:
             visited = map.get(search['visited'], w)
             if visited is None:
                 map.put(search['visited'],
@@ -125,7 +99,7 @@ def pathTo(search, vertex):
     try:
         if hasPathTo(search, vertex) is False:
             return None
-        path = stk.newStack()
+        path = stk.new_stack()
         while vertex != search['source']:
             stk.push(path, vertex)
             vertex = map.get(search['visited'], vertex)['value']['edgeTo']
