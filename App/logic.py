@@ -1,11 +1,13 @@
 import time
+from DataStructures.Graph import adj_list_graph as gr
 
 def new_logic():
     """
     Crea el catalogo para almacenar las estructuras de datos
     """
-    #TODO: Llama a las funciónes de creación de las estructuras de datos
-    pass
+    graph = gr.new_graph(3000,True)
+    
+    return graph
 
 
 # Funciones para la carga de datos
