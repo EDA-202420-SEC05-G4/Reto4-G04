@@ -1,5 +1,6 @@
 import time
 from DataStructures.Graph import adj_list_graph as gr
+import csv
 
 def new_logic():
     """
@@ -17,6 +18,7 @@ def load_data(catalog, filename):
     Carga los datos del reto
     """
     # TODO: Realizar la carga de datos
+    
     pass
 
 # Funciones de consulta sobre el catálogo
