@@ -88,7 +88,7 @@ def req_1(catalog,Id_1,Id_2):
 
 def req_2(catalog,Id_1,Id_2):
 
-    if gr.get_vertex_information(catalog,Id_1)['USER_TYPE']=='basic' and gr.get_vertex_information(catalog,Id_2)['USER_TYPE']=='basic'
+    if gr.get_vertex_information(catalog,Id_1)['USER_TYPE']=='basic' and gr.get_vertex_information(catalog,Id_2)['USER_TYPE']=='basic':
         recorrido=bfs.breath_first_search(catalog,Id_1)
         camino=bfs.path_to(recorrido,Id_2)
         info_usuarios=[]
@@ -99,6 +99,16 @@ def req_2(catalog,Id_1,Id_2):
     return info_usuarios,len(info_usuarios)
 
 
+def req_3(catalog,Id):
+    
+    max=0
+    max_amigo=()
+    for i in map.get(catalog['vertices'],Id):
+        if al.is_present(map.get(catalog['vertices'],i),Id):
+            if al.size(map.get(catalog['vertices'],i))>=max:
+                max=(al.size(map.get(catalog['vertices'],i)),i)
+                max_amigo=i
+    return max,max_amigo
 
 def req_3(catalog,Id):
     
