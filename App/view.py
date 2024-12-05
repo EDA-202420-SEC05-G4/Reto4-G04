@@ -197,13 +197,18 @@ def main():
             data = load_data(control)
             
         elif int(inputs) == 2:
-            print_req_1(control)
+            Id_1=int(input('Id del usuario A '))
+            Id_2=int(input('Id del usuario B '))
+            print_req_1(control,Id_1,Id_2)
 
         elif int(inputs) == 3:
-            print_req_2(control)
+            Id_1=int(input('Id del usuario A '))
+            Id_2=int(input('Id del usuario B '))
+            print_req_2(control,Id_1,Id_2)
 
         elif int(inputs) == 4:
-            print_req_3(control)
+            Id=int(input('Id del usuario: '))
+            print_req_3(control,Id)
 
         elif int(inputs) == 5:
             ida = int(input('ID del usuario A: '))
