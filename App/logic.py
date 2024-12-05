@@ -15,6 +15,12 @@ from DataStructures.List import single_linked_list as lt
 from DataStructures.Map import map_linear_probing as map
 from DataStructures.Map import map_functions as mf
 from DataStructures.Graph import adj_list_graph as gr
+from DataStructures.Graph import dfs as dfs
+from DataStructures.Graph import bfs as bfs
+from DataStructures.Graph import dfo as dfo
+from DataStructures.Graph import dijsktra as dijsktra
+from DataStructures.Graph import prim as prim
+
 
 data_dir = os.path.dirname(os.path.realpath('__file')) + '/Data/'
 
@@ -72,8 +78,8 @@ def req_1(catalog,Id_1,Id_2):
     """
     Retorna el resultado del requerimiento 1
     """
-    recorrido=gr.bfs(catalog,Id_1)
-    camino=bfs.pathTo(recorrido,Id_2)
+    recorrido=bfs.breath_first_search(catalog,Id_1)
+    camino=bfs.path_to(recorrido,Id_2)
     info_usuarios=[]
     for i in camino:
         info_usuarios.append(gr.get_vertex_information(catalog),i)
