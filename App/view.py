@@ -5,6 +5,7 @@ import json
 import ast
 from DataStructures.Map import map_linear_probing as map
 from DataStructures.List import array_list as al
+from DataStructures.Graph import adj_list_graph as gr
 
 
 def new_logic():
@@ -107,11 +108,31 @@ def print_req_4(control):
     pass
 
 
-def print_req_5(control):
+def print_req_5(control, Id, N):
     """
         Función que imprime la solución del Requerimiento 5 en consola
     """
-    # TODO: Imprimir el resultado del requerimiento 5
+    list, time = logic.req_5(control,Id,N)
+    
+    headers = ['ID','Nombre']
+    table = []
+    check = True
+    
+    if al.size(list) == 0:
+        check = False
+    else:
+        for i in list:
+            Id = i
+            info = gr.get_vertex_information(control,Id)
+            nombre = info['USER_NAME']
+            table.append([Id,nombre])
+            
+    if check:
+        print(tabulate(table, headers, tablefmt="simple"))
+        print('El requerimiento duró:',time)
+    else:
+        print('No se encontraron relaciones')
+    
     pass
 
 

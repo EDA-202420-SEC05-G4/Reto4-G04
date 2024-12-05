@@ -92,7 +92,7 @@ def req_1(catalog,Id_1,Id_2):
     camino=bfs.path_to(recorrido,Id_2)
     info_usuarios=[]
     for i in camino:
-        info_usuarios.append(gr.get_vertex_information(catalog),i)
+        info_usuarios.append(gr.get_vertex_information(catalog,i))
     end_time=get_time()
     delta_time=end_time-start_time
     return info_usuarios,delta_time
@@ -150,6 +150,7 @@ def req_5(catalog, Id, N):
     """
     Retorna el resultado del requerimiento 5
     """
+    st = get_time()
     adlist = map.get(catalog['vertices'],Id)
     adlist2 = al.new_list()
     for i in adlist['elements']:
@@ -158,7 +159,8 @@ def req_5(catalog, Id, N):
     
     al.quick_sort(adlist2,sortcrit5)
     list = al.sub_list(adlist,0,N)
-    return list
+    et = get_time()
+    return list,delta_time(st,et)
 
 def sortcrit5(catalog,Id1,Id2):
     is_sorted = False
