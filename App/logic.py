@@ -1,25 +1,62 @@
 import time
-from DataStructures.Graph import adj_list_graph as gr
+import os
 import csv
+import datetime
+from tabulate import tabulate
+import ast
+import sys
+import json
+import ast 
+
+from DataStructures.Tree import red_black_tree as rbt
+from DataStructures.Tree import rbt_node as rbn
+from DataStructures.List import array_list as al
+from DataStructures.List import single_linked_list as lt
+from DataStructures.Map import map_linear_probing as map
+from DataStructures.Map import map_functions as mf
+from DataStructures.Graph import adj_list_graph as gr
+
+data_dir = os.path.dirname(os.path.realpath('__file')) + '/Data/'
+
 
 def new_logic():
     """
     Crea el catalogo para almacenar las estructuras de datos
     """
-    graph = gr.new_graph(3000,True)
+    graph = gr.new_graph(1000,True)
     
     return graph
 
 
 # Funciones para la carga de datos
 
-def load_data(catalog, filename):
+def load_data(catalog):
     """
     Carga los datos del reto
     """
-    # TODO: Realizar la carga de datos
+    info = "/users_info_10.csv"
+    relations = "/relationships_10.csv"
+    info = csv.DictReader(open(data_dir+info, encoding="utf-8"), delimiter=";")
+    relations = csv.DictReader(open(data_dir+relations, encoding="utf-8"), delimiter=";")
+    #i = 1
+    for user in info:
+        hobbies = ast.literal_eval(user['HOBBIES'])
+        user['HOBBIES'] = hobbies
+        user['USER_ID'] = int(float(user['USER_ID']))
+        user['AGE'] = int(float(user['AGE']))
+        user['LATITUDE'] = float(user['LATITUDE'])
+        user['LONGITUDE'] = float(user['LONGITUDE'])
+        catalog = gr.insert_vertex(catalog,user['USER_ID'],user)
+    print(catalog['vertices']['size'])
     
-    pass
+    for relation in relations:
+        key_a = int(relation['FOLLOWER_ID'])
+        key_b = int(relation['FOLLOWED_ID'])
+        weight = relation['START_DATE']
+        catalog = gr.add_edge(catalog,key_a,key_b,weight)
+    print(catalog['edges'])
+    
+    return catalog
 
 # Funciones de consulta sobre el catálogo
 
@@ -31,12 +68,16 @@ def get_data(catalog, id):
     pass
 
 
-def req_1(catalog):
+def req_1(catalog,Id_1,Id_2):
     """
     Retorna el resultado del requerimiento 1
     """
-    # TODO: Modificar el requerimiento 1
-    pass
+    recorrido=gr.bfs(catalog,Id_1)
+    camino=bfs.pathTo(recorrido,Id_2)
+    info_usuarios=[]
+    for i in camino:
+        info_usuarios.append(gr.get_vertex_information(catalog),i)
+    return info_usuarios
 
 
 def req_2(catalog):

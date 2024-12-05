@@ -13,7 +13,8 @@ def new_graph(size=19,directed=False):
          'directed' : directed,
          'type' : 'ADJ_LIST'
     }
-    
+    if directed:
+        g['in_degree'] = map.new_map(size,0.5)
     return g
 
 
@@ -32,7 +33,7 @@ def insert_vertex(graph, key, info):
         map.put(graph['vertices'], key, edges)
         map.put(graph['information'], key, info)
         if (graph['directed']):
-            map.put(graph['indegree'], key, 0)
+            map.put(graph['in_degree'], key, 0)
         return graph
     except Exception as exp:
         error.reraise(exp, 'ajlist:insertvertex')
