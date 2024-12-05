@@ -104,17 +104,6 @@ def req_3(catalog,Id):
     max=0
     max_amigo=()
     for i in map.get(catalog['vertices'],Id):
-        if al.is_present(map.get(catalog['vertices'],i),Id):
-            if al.size(map.get(catalog['vertices'],i))>=max:
-                max=(al.size(map.get(catalog['vertices'],i)),i)
-                max_amigo=i
-    return max,max_amigo
-
-def req_3(catalog,Id):
-    
-    max=0
-    max_amigo=()
-    for i in map.get(catalog['vertices'],Id):
         if is_friend(catalog,Id,i):
             if al.size(map.get(catalog['vertices'],i))>=max:
                 max=(al.size(map.get(catalog['vertices'],i)),i)
