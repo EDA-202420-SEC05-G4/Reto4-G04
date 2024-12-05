@@ -135,7 +135,7 @@ def is_friend(catalog,A_id, B_id):
         return False
 
 
-def req_4(catalog):
+def req_4(catalog,Id_A,Id_B):
     start_time=get_time()
     amigos_comun=[]
     for i in map.get(catalog['vertices'],Id_A)['elements']:
@@ -153,12 +153,17 @@ def req_5(catalog, Id, N):
     st = get_time()
     adlist = map.get(catalog['vertices'],Id)
     adlist2 = al.new_list()
-    for i in adlist['elements']:
-        if is_friend(catalog,Id,i):
-            al.add_last(adlist2,i)
-    
-    al.quick_sort(adlist2,sortcrit5)
-    list = al.sub_list(adlist,0,N)
+    if al.size(adlist2) > 0:
+        for i in adlist['elements']:
+            if is_friend(catalog,Id,i):
+                al.add_last(adlist2,i)
+        al.quick_sort(adlist2,sortcrit5)
+        if N < al.size(adlist2):
+            list = al.sub_list(adlist,0,N)
+        else:
+            list = adlist2
+    else:
+        list = None
     et = get_time()
     return list,delta_time(st,et)
 

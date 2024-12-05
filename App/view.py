@@ -118,7 +118,7 @@ def print_req_5(control, Id, N):
     table = []
     check = True
     
-    if al.size(list) == 0:
+    if list == None:
         check = False
     else:
         for i in list:
@@ -191,7 +191,9 @@ def main():
             print_req_4(control)
 
         elif int(inputs) == 6:
-            print_req_5(control)
+            N = int(input('Numero de amigos a consultar: '))
+            Id = int(input('Id a consultar: '))
+            print_req_5(control,Id,N)
 
         elif int(inputs) == 7:
             print_req_6(control)
