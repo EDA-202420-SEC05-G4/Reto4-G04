@@ -5,6 +5,7 @@ import json
 import ast
 from DataStructures.Map import map_linear_probing as map
 from DataStructures.List import array_list as al
+from DataStructures.Graph import adj_list_graph as gr
 
 
 def new_logic():
@@ -75,44 +76,117 @@ def print_data(control, id):
     #TODO: Realizar la función para imprimir un elemento
     pass
 
-def print_req_1(control):
+
+def print_req_1(control,id_1,id_2):
     """
         Función que imprime la solución del Requerimiento 1 en consola
     """
-    # TODO: Imprimir el resultado del requerimiento 1
-    pass
+    respuesta, time = logic.req_1(control,id_1,id_2)
+    headers = ['ID','Alias','Tipo de usuario']
+    table = []
+    check = True
+    
+    if len(respuesta) == 0:
+        check = False
+        
+    else:
+        for user in respuesta:
+            id = user['USER_ID']
+            nombre = user['USER_NAME']
+            tipo = user['USER_TYPE']
+            table.append([id,nombre,tipo])
+            
+    if check:
+        print('El requerimiento duró:'+str(time))
+        print('Hay '+str(len(respuesta))+' personas en el camino\n')
+        print(tabulate(table, headers, tablefmt="simple"))
+        
+    else:
+        print('No se encontraron relaciones')
 
 
-def print_req_2(control):
-    """
-        Función que imprime la solución del Requerimiento 2 en consola
-    """
-    # TODO: Imprimir el resultado del requerimiento 2
-    pass
+def print_req_2(control,Id_1,Id_2):
+    list,cantidad,time=logic.req_1(control,Id_1,Id_2)
+    headers = ['ID','Nombre']
+    table = []
+    check = True
+    
+    if al.size(list) == 0:
+        check = False
+    else:
+        for i in list:
+            Id = i
+            info = gr.get_vertex_information(control,Id)
+            nombre = info['USER_NAME']
+            table.append([Id,nombre])
+            
+    if check:
+        print(tabulate(table, headers, tablefmt="simple"))
+        print('Hubo ',cantidad,' personas en el camino')
+        print('El requerimiento duró:',time)
+        
+    else:
+        print('No se encontraron relaciones')
 
 
-def print_req_3(control):
-    """
-        Función que imprime la solución del Requerimiento 3 en consola
-    """
-    # TODO: Imprimir el resultado del requerimiento 3
-    pass
+def print_req_3(control,Id):
+    max,max_amigo,time=logic.req_3(control,Id)
+    print('El amigo fue:',max_amigo)
+    print('Sus seguidores son: ', max)
+    print('El requerimiento duró: ', time)
 
 
-def print_req_4(control):
+def print_req_4(control, ID_A, ID_B):
     """
         Función que imprime la solución del Requerimiento 4 en consola
     """
-    # TODO: Imprimir el resultado del requerimiento 4
-    pass
+    ac, time = logic.req_4(control,ID_A,ID_B)
+    
+    headers = ['ID', 'Nombre', 'Tipo de usuario']
+    table = []
+    check = True
+    
+    if len(ac)  == 0:
+        check = False
+    else:
+        for i in ac:
+            id = i['USER_ID']
+            Nombre = i['USER_NAME']
+            Tipo = i['USER_TYPE']
+            
+            table.append([id,Nombre,Tipo])
+    
+    if check:
+        print(tabulate(table, headers, tablefmt="simple"))
+        print('El requerimiento duró:',time)
+    else:
+        print('No se necontraron amigos en común\n')
 
 
-def print_req_5(control):
+def print_req_5(control, Id, N):
     """
         Función que imprime la solución del Requerimiento 5 en consola
     """
-    # TODO: Imprimir el resultado del requerimiento 5
-    pass
+    list, time = logic.req_5(control,Id,N)
+    
+    headers = ['ID','Nombre']
+    table = []
+    check = True
+    
+    if list == None:
+        check = False
+    else:
+        for i in list:
+            Id = i
+            info = gr.get_vertex_information(control,Id)
+            nombre = info['USER_NAME']
+            table.append([Id,nombre])
+            
+    if check:
+        print(tabulate(table, headers, tablefmt="simple"))
+        print('El requerimiento duró:',time)
+    else:
+        print('No se encontraron relaciones')
 
 
 def print_req_6(control):
@@ -158,19 +232,28 @@ def main():
             data = load_data(control)
             
         elif int(inputs) == 2:
-            print_req_1(control)
+            id_1 = input('\nCuenta origen: ')
+            id_2 = input('\nCuenta destino: ')
+            print_req_1(data,int(id_1),int(id_2))
 
         elif int(inputs) == 3:
-            print_req_2(control)
+            Id_1=int(input('Id del usuario A '))
+            Id_2=int(input('Id del usuario B '))
+            print_req_2(control,int(Id_1),int(Id_2))
 
         elif int(inputs) == 4:
-            print_req_3(control)
+            Id=int(input('Id del usuario: '))
+            print_req_3(control,Id)
 
         elif int(inputs) == 5:
-            print_req_4(control)
+            ida = int(input('ID del usuario A: '))
+            idb = int(input('ID del usuario B: '))
+            print_req_4(control,ida,idb)
 
         elif int(inputs) == 6:
-            print_req_5(control)
+            N = int(input('Numero de amigos a consultar: '))
+            Id = int(input('Id a consultar: '))
+            print_req_5(control,Id,N)
 
         elif int(inputs) == 7:
             print_req_6(control)

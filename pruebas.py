@@ -1,1 +1,1 @@
-print(round(float('6384.061651651'),2))
+print(list(reversed([1,2,3,4,5])))

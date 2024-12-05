@@ -30,7 +30,7 @@ def new_logic():
     """
     Crea el catalogo para almacenar las estructuras de datos
     """
-    graph = gr.new_graph(1000,True)
+    graph = gr.new_graph(3000,True)
     graph['basic'] = 0
     graph['premium'] = 0
     graph['citys'] = {}
@@ -44,7 +44,7 @@ def load_data(catalog):
     """
     Carga los datos del reto
     """
-    info = "/users_info_10.csv"
+    info = "/users_info_30.csv"
     relations = "/relationships_10.csv"
     info = csv.DictReader(open(data_dir+info, encoding="utf-8"), delimiter=";")
     relations = csv.DictReader(open(data_dir+relations, encoding="utf-8"), delimiter=";")
@@ -90,9 +90,18 @@ def req_1(catalog,Id_1,Id_2):
     start_time=get_time()
     recorrido=bfs.breath_first_search(catalog,Id_1)
     camino=bfs.path_to(recorrido,Id_2)
+    #print(camino)
     info_usuarios=[]
-    for i in camino:
-        info_usuarios.append(gr.get_vertex_information(catalog),i)
+    i = 0
+    if camino is not None:
+        node = camino['first']
+        while i < camino['size']:
+            key = node ['info'] 
+            info_usuarios.append(gr.get_vertex_information(catalog,key))
+            node = node['next'] 
+            i += 1
+    info_usuarios = list(reversed(info_usuarios))
+    #print(info_usuarios)
     end_time=get_time()
     delta_time=end_time-start_time
     return info_usuarios,delta_time
@@ -134,15 +143,29 @@ def is_friend(catalog,A_id, B_id):
     else:
         return False
 
-
-def req_4(catalog):
+def friends(catalog,key):
+    friends = al.new_list()
+    for i in gr.adjacents(catalog,key)['elements']:
+        if al.is_present(gr.adjacents(catalog,i),key) >= 0:
+            al.add_last(friends,i)
+    return friends
+    
+def req_4(catalog,Id_A,Id_B):
+    
     start_time=get_time()
     amigos_comun=[]
-    for i in map.get(catalog['vertices'],Id_A)['elements']:
-        if al.is_present(map.get(catalog['vertices'],Id_B),i):
+    friends_a = friends(catalog,Id_A)
+    print(friends_a['elements'])
+    friends_b = friends(catalog,Id_B)
+    print(friends_b['elements'])
+    
+    for i in friends_a['elements']:
+        if al.is_present(friends_b,i) >= 0:
             amigos_comun.append(i)
+            
     end_time=get_time()
     delta_time=end_time-start_time
+    
     return amigos_comun,delta_time
 
 
@@ -150,15 +173,22 @@ def req_5(catalog, Id, N):
     """
     Retorna el resultado del requerimiento 5
     """
+    st = get_time()
     adlist = map.get(catalog['vertices'],Id)
     adlist2 = al.new_list()
-    for i in adlist['elements']:
-        if is_friend(catalog,Id,i):
-            al.add_last(adlist2,i)
-    
-    al.quick_sort(adlist2,sortcrit5)
-    list = al.sub_list(adlist,0,N)
-    return list
+    if al.size(adlist2) > 0:
+        for i in adlist['elements']:
+            if is_friend(catalog,Id,i):
+                al.add_last(adlist2,i)
+        al.quick_sort(adlist2,sortcrit5)
+        if N < al.size(adlist2):
+            list = al.sub_list(adlist,0,N)
+        else:
+            list = adlist2
+    else:
+        list = None 
+    et = get_time()
+    return list,delta_time(st,et)
 
 def sortcrit5(catalog,Id1,Id2):
     is_sorted = False
