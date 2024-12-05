@@ -141,7 +141,7 @@ def req_5(catalog, Id, N):
 
 def sortcrit5(catalog,Id1,Id2):
     is_sorted = False
-    if gr.out_degree(catalog,Id1) < gr.out_degree(catalog,Id2):
+    if gr.out_degree(catalog,Id1) > gr.out_degree(catalog,Id2):
         is_sorted = True
     return is_sorted
 
