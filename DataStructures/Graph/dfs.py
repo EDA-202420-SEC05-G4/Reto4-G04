@@ -1,109 +1,50 @@
-import config
-from DataStructures.Graph import adj_list_graph as g
-from DataStructures.List import array_list as lt
 from DataStructures.Map import map_linear_probing as map
+from DataStructures.Graph import adj_list_graph as graph
+from DataStructures.Graph import graph_search as gs
+from DataStructures.List import array_list as lt
 from DataStructures.Stack import stack as stk
-from DataStructures.Utils import error as error
-assert config
 
 
-def DepthFirstSearch(graph, source):
-    """
-    Genera un recorrido DFS sobre el grafo graph
-    Args:
-        graph:  El grafo a recorrer
-        source: Vertice de inicio del recorrido.
-    Returns:
-        Una estructura para determinar los vertices
-        conectados a source
-    Raises:
-        Exception
-    """
-    try:
-        search = {
-                  'source': source,
-                  'visited': None,
-                  }
+def depth_first_search(my_graph, source):
 
-        search['visited'] = map.new_map(numelements=g.num_vertices(graph),
-                                       maptype='PROBING',
-                                       cmpfunction=graph['cmpfunction']
-                                       )
+    search = gs.new_graph_search(source)
+    search["visited"] = map.new_map(graph.num_vertices(my_graph),load_factor=0.5,)
+    
+    map.put(search["visited"], source, {"marked": True, "edge_to": None})
+    dfs_vertex(search, my_graph, source)
+    
+    return search
 
-        map.put(search['visited'], source, {'marked': True, 'edgeTo': None})
-        dfsVertex(search, graph, source)
-        return search
-    except Exception as exp:
-        error.reraise(exp, 'dfs:DFS')
+def dfs_vertex(search, my_graph, vertex):
+    
+    adj_list = graph.adjacents(my_graph, vertex)
+    for i in range(lt.size(adj_list)):
+        w = lt.get_element(adj_list, i)
+        visited = map.get(search["visited"], w)
+        if visited is None:
+            map.put(search["visited"], w, {"marked": True, "edge_to": vertex})
+            dfs_vertex(search, my_graph, w)
+    return search
 
+def has_path_to(search, vertex):
+    
+    element = map.get(search["visited"], vertex)
+    if element and element["marked"] is True:
+        return True
+    
+    return False
 
-def dfsVertex(search, graph, vertex):
-    """
-    Funcion auxiliar para calcular un recorrido DFS
-    Args:
-        search: Estructura para almacenar el recorrido
-        vertex: Vertice de inicio del recorrido.
-    Returns:
-        Una estructura para determinar los vertices
-        conectados a source
-    Raises:
-        Exception
-    """
-    try:
-        adjlst = g.adjacents(graph, vertex)
-        for w in adjlst['elements']:
-            visited = map.get(search['visited'], w)
-            if visited is None:
-                map.put(search['visited'],
-                        w, {'marked': True, 'edgeTo': vertex})
-                dfsVertex(search, graph, w)
-        return search
-    except Exception as exp:
-        error.reraise(exp, 'dfs:dfsVertex')
+def path_to(search, vertex):
+    
+    if has_path_to(search, vertex) is False:
+        return None
+    path = stk.new_stack()
+    while vertex != search["source"]:
+        stk.push(path, vertex)
+        vertex = map.get(search["visited"], vertex)["edge_to"]
+    stk.push(path, search["source"])
+    
+    return path
 
 
-def hasPathTo(search, vertex):
-    """
-    Indica si existe un camino entre el vertice source
-    y el vertice vertex
-    Args:
-        search: Estructura de recorrido DFS
-        vertex: Vertice destino
-    Returns:
-        True si existe un camino entre source y vertex
-    Raises:
-        Exception
-    """
-    try:
-        element = map.get(search['visited'], vertex)
-        if element and element['value']['marked'] is True:
-            return True
-        return False
-    except Exception as exp:
-        error.reraise(exp, 'dfs:hasPathto')
 
-
-def pathTo(search, vertex):
-    """
-    Retorna el camino entre el vertices source y el
-    vertice vertex
-    Args:
-        search: La estructura con el recorrido
-        vertex: Vertice de destingo
-    Returns:
-        Una pila con el camino entre el vertices source y el
-        vertice vertex
-    Raises:
-        Exception
-    """
-    try:
-        if hasPathTo(search, vertex) is False:
-            return None
-        path = stk.new_stack()
-        while vertex != search['source']:
-            stk.push(path, vertex)
-            vertex = map.get(search['visited'], vertex)['value']['edgeTo']
-        stk.push(path, search['source'])
-        return path
-    except Exception as exp:
-        error.reraise(exp, 'dfs:pathto')
