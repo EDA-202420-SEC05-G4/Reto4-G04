@@ -86,21 +86,37 @@ def req_1(catalog,Id_1,Id_2):
     return info_usuarios
 
 
-def req_2(catalog):
-    """
-    Retorna el resultado del requerimiento 2
-    """
-    # TODO: Modificar el requerimiento 2
-    pass
+def req_2(catalog,Id_1,Id_2):
+
+    if gr.get_vertex_information(catalog,Id_1)['USER_TYPE']=='basic' and gr.get_vertex_information(catalog,Id_2)['USER_TYPE']=='basic'
+        recorrido=bfs.breath_first_search(catalog,Id_1)
+        camino=bfs.path_to(recorrido,Id_2)
+        info_usuarios=[]
+        for i in camino:
+            info_usuarios.append(gr.get_vertex_information(catalog,i))
+    else:
+        info_usuarios='Los usuarios no son de tipo básico'
+    return info_usuarios,len(info_usuarios)
 
 
-def req_3(catalog):
-    """
-    Retorna el resultado del requerimiento 3
-    """
-    # TODO: Modificar el requerimiento 3
-    pass
 
+def req_3(catalog,Id):
+    
+    max=0
+    max_amigo=()
+    for i in map.get(catalog['vertices'],Id):
+        if is_friend(catalog,Id,i):
+            if al.size(map.get(catalog['vertices'],i))>=max:
+                max=(al.size(map.get(catalog['vertices'],i)),i)
+                max_amigo=i
+    return max,max_amigo
+
+def is_friend(catalog,A_id, B_id):
+    if al.is_present(map.get(catalog['vertices'],A_id),B_id):
+        if al.is_present(map.get(catalog['vertices'],B_id),A_id):
+            return True
+    else:
+        return False
 
 def req_4(catalog):
     """
