@@ -30,7 +30,7 @@ def new_logic():
     """
     Crea el catalogo para almacenar las estructuras de datos
     """
-    graph = gr.new_graph(3000,True)
+    graph = gr.new_graph(10000,True)
     graph['basic'] = 0
     graph['premium'] = 0
     graph['citys'] = {}
@@ -44,8 +44,8 @@ def load_data(catalog):
     """
     Carga los datos del reto
     """
-    info = "/users_info_30.csv"
-    relations = "/relationships_10.csv"
+    info = "/users_info_large.csv"
+    relations = "/relationships_large.csv"
     info = csv.DictReader(open(data_dir+info, encoding="utf-8"), delimiter=";")
     relations = csv.DictReader(open(data_dir+relations, encoding="utf-8"), delimiter=";")
  
