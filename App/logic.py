@@ -163,7 +163,7 @@ def req_5(catalog, Id, N):
         else:
             list = adlist2
     else:
-        list = None
+        list = None 
     et = get_time()
     return list,delta_time(st,et)
 

@@ -100,12 +100,31 @@ def print_req_3(control):
     pass
 
 
-def print_req_4(control):
+def print_req_4(control, ID_A, ID_B):
     """
         Función que imprime la solución del Requerimiento 4 en consola
     """
-    # TODO: Imprimir el resultado del requerimiento 4
-    pass
+    ac, time = logic.req_4(control,ID_A,ID_B)
+    
+    headers = ['ID', 'Nombre', 'Tipo de usuario']
+    table = []
+    check = True
+    
+    if len(ac)  == 0:
+        check = False
+    else:
+        for i in ac:
+            id = i['ID']
+            Nombre = i['USER_NAME']
+            Tipo = i['USER_TYPE']
+            
+            table.append([id,Nombre,Tipo])
+    
+    if check:
+        print(tabulate(table, headers, tablefmt="simple"))
+        print('El requerimiento duró:',time)
+    else:
+        print('No se necontraron amigos en comun')
 
 
 def print_req_5(control, Id, N):
@@ -133,7 +152,6 @@ def print_req_5(control, Id, N):
     else:
         print('No se encontraron relaciones')
     
-    pass
 
 
 def print_req_6(control):
@@ -188,7 +206,9 @@ def main():
             print_req_3(control)
 
         elif int(inputs) == 5:
-            print_req_4(control)
+            ida = int(input('ID del usuario A: '))
+            idb = int(input('ID del usuario B: '))
+            print_req_4(control,ida,idb)
 
         elif int(inputs) == 6:
             N = int(input('Numero de amigos a consultar: '))
