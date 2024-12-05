@@ -245,21 +245,13 @@ def main():
         elif int(inputs) == 4:
             Id=int(input('Id del usuario: '))
             print_req_3(control,Id)
-            Id=int(input('Id del usuario: '))
-            print_req_3(control,Id)
 
         elif int(inputs) == 5:
             ida = int(input('ID del usuario A: '))
             idb = int(input('ID del usuario B: '))
             print_req_4(control,ida,idb)
-            ida = int(input('ID del usuario A: '))
-            idb = int(input('ID del usuario B: '))
-            print_req_4(control,ida,idb)
 
         elif int(inputs) == 6:
-            N = int(input('Numero de amigos a consultar: '))
-            Id = int(input('Id a consultar: '))
-            print_req_5(control,Id,N)
             N = int(input('Numero de amigos a consultar: '))
             Id = int(input('Id a consultar: '))
             print_req_5(control,Id,N)
