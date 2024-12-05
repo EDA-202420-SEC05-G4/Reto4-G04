@@ -1,12 +1,18 @@
 import sys
+from App import logic
+from tabulate import tabulate
+import json
+import ast
+from DataStructures.Map import map_linear_probing as map
+from DataStructures.List import array_list as al
 
 
 def new_logic():
     """
         Se crea una instancia del controlador
     """
-    #TODO: Llamar la función de la lógica donde se crean las estructuras de datos
-    pass
+    return logic.new_logic()
+
 
 def print_menu():
     print("Bienvenido")
@@ -21,12 +27,45 @@ def print_menu():
     print("9- Ejecutar Requerimiento 8 (Bono)")
     print("0- Salir")
 
+
+def sort_criteria(element1, element2):
+    is_sorted = False
+    if element1[1] < element2[1]:
+        is_sorted = True
+    return is_sorted
+
+
 def load_data(control):
     """
     Carga los datos
     """
-    #TODO: Realizar la carga de datos
-    pass
+    control = logic.load_data(control)
+    headers = ['Usuarios','Conexiones','Basic','Premium','Promedio Seguidores','Cuidad con más seguidores']
+    keys = map.key_set(control['in_degree'])
+    promedio = 0
+    for key in keys['elements']:
+        promedio += map.get(control['in_degree'],key)
+    users = control['vertices']['size']
+    #print(users)
+    #print(control['edges'])
+    #print(control['basic'])
+    #print(control['premium'])
+    promedio = promedio/users
+    #print(promedio)
+    citys_list = list(control['citys'].keys())
+    #print(citys_list)
+    citys = al.new_list()
+    for city in citys_list:
+        al.add_last(citys,[city,control['citys'][city]])
+    #print(citys['elements'])
+    citys = al.quick_sort(citys,sort_criteria)
+    #print(citys['elements'])
+    city = citys['elements'][-1]
+    #print(city)
+    table = [[str(users),str(control['edges']),str(control['basic']),str(control['premium']),str(round(promedio,2)),city[0]+': '+str(city[1])]]
+    print(tabulate(table, headers, tablefmt="simple"))
+    print('\n')
+    return control
 
 
 def print_data(control, id):
@@ -113,9 +152,11 @@ def main():
     while working:
         print_menu()
         inputs = input('Seleccione una opción para continuar\n')
+        
         if int(inputs) == 1:
             print("Cargando información de los archivos ....\n")
             data = load_data(control)
+            
         elif int(inputs) == 2:
             print_req_1(control)
 
