@@ -174,8 +174,22 @@ def req_5(catalog, Id, N):
     Retorna el resultado del requerimiento 5
     """
     st = get_time()
+    st = get_time()
     adlist = map.get(catalog['vertices'],Id)
     adlist2 = al.new_list()
+    if al.size(adlist2) > 0:
+        for i in adlist['elements']:
+            if is_friend(catalog,Id,i):
+                al.add_last(adlist2,i)
+        al.quick_sort(adlist2,sortcrit5)
+        if N < al.size(adlist2):
+            list = al.sub_list(adlist,0,N)
+        else:
+            list = adlist2
+    else:
+        list = None 
+    et = get_time()
+    return list,delta_time(st,et)
     if al.size(adlist2) > 0:
         for i in adlist['elements']:
             if is_friend(catalog,Id,i):

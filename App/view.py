@@ -6,6 +6,7 @@ import ast
 from DataStructures.Map import map_linear_probing as map
 from DataStructures.List import array_list as al
 from DataStructures.Graph import adj_list_graph as gr
+from DataStructures.Graph import adj_list_graph as gr
 
 
 def new_logic():
@@ -137,6 +138,7 @@ def print_req_3(control,Id):
 
 
 def print_req_4(control, ID_A, ID_B):
+def print_req_4(control, ID_A, ID_B):
     """
         Función que imprime la solución del Requerimiento 4 en consola
     """
@@ -239,9 +241,11 @@ def main():
         elif int(inputs) == 3:
             Id_1=int(input('Id del usuario A '))
             Id_2=int(input('Id del usuario B '))
-            print_req_2(control,int(Id_1),int(Id_2))
+            print_req_2(control,Id_1,Id_2)
 
         elif int(inputs) == 4:
+            Id=int(input('Id del usuario: '))
+            print_req_3(control,Id)
             Id=int(input('Id del usuario: '))
             print_req_3(control,Id)
 
@@ -249,8 +253,14 @@ def main():
             ida = int(input('ID del usuario A: '))
             idb = int(input('ID del usuario B: '))
             print_req_4(control,ida,idb)
+            ida = int(input('ID del usuario A: '))
+            idb = int(input('ID del usuario B: '))
+            print_req_4(control,ida,idb)
 
         elif int(inputs) == 6:
+            N = int(input('Numero de amigos a consultar: '))
+            Id = int(input('Id a consultar: '))
+            print_req_5(control,Id,N)
             N = int(input('Numero de amigos a consultar: '))
             Id = int(input('Id a consultar: '))
             print_req_5(control,Id,N)
