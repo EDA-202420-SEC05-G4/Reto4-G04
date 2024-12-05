@@ -76,28 +76,63 @@ def print_data(control, id):
     #TODO: Realizar la función para imprimir un elemento
     pass
 
-def print_req_1(control):
-    """
-        Función que imprime la solución del Requerimiento 1 en consola
-    """
-    # TODO: Imprimir el resultado del requerimiento 1
-    pass
+def print_req_1(control,Id_1,Id_2):
+    
+    respuesta,time=logic.req_1(control,Id_1,Id_2)
+    headers = ['ID','Nombre']
+    table = []
+    check = True
+    
+    if al.size(list) == 0:
+        check = False
+    else:
+        for i in list:
+            Id = i
+            info = gr.get_vertex_information(control,Id)
+            nombre = info['USER_NAME']
+            table.append([Id,nombre])
+            
+    if check:
+        print(tabulate(table, headers, tablefmt="simple"))
+        print('Hubo ',len(respuesta),' personas en el camino')
+        print('El requerimiento duró:',time)
+        
+    else:
+        print('No se encontraron relaciones')
+    
 
 
-def print_req_2(control):
-    """
-        Función que imprime la solución del Requerimiento 2 en consola
-    """
-    # TODO: Imprimir el resultado del requerimiento 2
-    pass
+
+def print_req_2(control,Id_1,Id_2):
+    list,cantidad,time=logic.req_1(control,Id_1,Id_2)
+    headers = ['ID','Nombre']
+    table = []
+    check = True
+    
+    if al.size(list) == 0:
+        check = False
+    else:
+        for i in list:
+            Id = i
+            info = gr.get_vertex_information(control,Id)
+            nombre = info['USER_NAME']
+            table.append([Id,nombre])
+            
+    if check:
+        print(tabulate(table, headers, tablefmt="simple"))
+        print('Hubo ',cantidad,' personas en el camino')
+        print('El requerimiento duró:',time)
+        
+    else:
+        print('No se encontraron relaciones')
 
 
-def print_req_3(control):
-    """
-        Función que imprime la solución del Requerimiento 3 en consola
-    """
-    # TODO: Imprimir el resultado del requerimiento 3
-    pass
+
+def print_req_3(control,Id):
+    max,max_amigo,time=logic.req_3(control,Id)
+    print('El amigo fue:',max_amigo)
+    print('Sus seguidores son: ', max)
+    print('El requerimiento duró: ', time)
 
 
 def print_req_4(control, ID_A, ID_B):
