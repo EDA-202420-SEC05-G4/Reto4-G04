@@ -138,7 +138,6 @@ def print_req_3(control,Id):
 
 
 def print_req_4(control, ID_A, ID_B):
-def print_req_4(control, ID_A, ID_B):
     """
         Función que imprime la solución del Requerimiento 4 en consola
     """
