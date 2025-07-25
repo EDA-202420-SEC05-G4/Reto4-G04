@@ -1,0 +1,60 @@
+name: Folder Contributions Report
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  count-lines:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install requests
+      
+      - name: Checkout Repo (Full History)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Count Lines Added by Contributor in Folder
+        run: |
+          FOLDER="App" 
+          echo "Analyzing folder: $FOLDER"
+          REPO_NAME=$(basename `git rev-parse --show-toplevel`)
+          git log --format='%aN <%aE>' -- $FOLDER | sort | uniq > contributors.txt
+          TOTAL=$(git log --pretty=tformat: --numstat -- $FOLDER | awk '{added+=$1} END {print added}')
+          ORG_NAME=$(basename $(git config --get remote.origin.url | sed -E 's/.*[:\/]([^\/]+)\/[^\/]+(\.git)?$/\1/'))
+          
+          echo "{" > report.json
+          echo "  \"org\": \"$ORG_NAME\"," >> report.json
+          echo "  \"repo\": \"$REPO_NAME\"," >> report.json
+          echo "  \"folder\": \"$FOLDER\"," >> report.json
+          echo "  \"total_additions\": $TOTAL," >> report.json
+          echo "  \"contributors\": [" >> report.json
+          first=1
+          while read contributor; do
+            count=$(git log --author="$contributor" --pretty=tformat: --numstat -- $FOLDER | awk '{added+=$1} END {print added}')
+            percent=$(awk "BEGIN {printf \"%.2f\", ($count/$TOTAL)*100}")
+            if [ $first -eq 0 ]; then
+              echo "," >> report.json
+            fi
+            echo "    {\"name\": \"$contributor\", \"lines_added\": $count, \"percent\": $percent}" >> report.json
+            first=0
+          done < contributors.txt
+          echo "  ]" >> report.json
+          echo "}" >> report.json
+          echo "Full report saved in report.json"
+      
+      - name: Call endpoint to Publish
+        run: |
+          python upStats.py
